@@ -1,6 +1,4 @@
-const { MessageEmbed }            = require('discord.js');
 const { Command }                 = require('discord.js-commando');
-const { discord }                 = require('@utils/colors.json');
 const { SendErrorMsg }            = require('@utils/functions');
 
 module.exports = class BansCmd extends Command {

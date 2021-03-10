@@ -1,9 +1,9 @@
-const { MessageEmbed }                                          = require('discord.js');
-const { Command }                                               = require('discord.js-commando');
-const { discord }                                               = require('@utils/colors.json');
-const { GetClientUpTime }                                       = require('@utils/functions');
-const { ownerTag, ownerName, invGuildLink, invClientLink }      = require('@root/config.json');
-const { version }                                               = require('@root/package.json');
+const { Command }                           = require('discord.js-commando');
+const { MessageEmbed }                      = require('discord.js');
+const { discord }                           = require('@utils/colors.json');
+const { GetClientUpTime }                   = require('@utils/functions');
+const { invGuildLink, invClientLink }       = require('@root/config.json');
+const { version }                           = require('@root/package.json');
 
 module.exports = class BotInfoCmd extends Command {
   constructor(client) {
@@ -24,6 +24,9 @@ module.exports = class BotInfoCmd extends Command {
   async run(message) {
     const { channel, author } = message;
 
+    const owner = this.client.owners[0];
+    const ownerName = `${owner.username}#${owner.discriminator}`;
+
     const embed = new MessageEmbed()
       .setColor(discord)
       .setTitle(`» Informations about me`)
@@ -31,7 +34,7 @@ module.exports = class BotInfoCmd extends Command {
       .setFooter(`Requested by ${author.tag}`, author.displayAvatarURL({ size: 32, dynamic: true }))
       .setDescription(`Loool, someone's asking for me 🥰\n\u200B`)
       .addFields(
-        { name: '× Developer', value: `${ownerName}#${ownerTag}`, inline: true },
+        { name: '× Developer', value: ownerName, inline: true },
         { name: '× Bot Version', value: version, inline: true },
         { name: '\u200B', value: '\u200B', inline: true },
 

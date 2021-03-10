@@ -1,7 +1,5 @@
-const { MessageEmbed }    = require('discord.js');
 const { Command }         = require('discord.js-commando');
 const { SendUsageMsg }    = require('@utils/functions');
-const { discord }         = require('@utils/colors.json');
 
 module.exports = class ChooseCmd extends Command {
   constructor(client) {
