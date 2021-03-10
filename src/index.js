@@ -22,6 +22,7 @@ client.on('ready', async () => {
     .registerDefaultTypes()
     .registerGroups([
       ['misc', 'misc commands'],
+      ['moderation', 'moderation commands'],
     ])
     .registerCommandsIn(path.join(__dirname, 'commands'));
 });
