@@ -1,6 +1,7 @@
 const { Command }             = require('discord.js-commando');
 const { MessageEmbed }        = require('discord.js');
 const { discord }             = require('@utils/colors.json');
+const { GetUserFromMention }  = require('@utils/functions');
 
 module.exports = class AvatarCmd extends Command {
   constructor(client) {
@@ -10,7 +11,6 @@ module.exports = class AvatarCmd extends Command {
       aliases: ['icon'],
       group: 'misc',
       description: 'Displays members avatar',
-      argsType: 'multiple',
 
       guildOnly: true,
 
@@ -19,14 +19,14 @@ module.exports = class AvatarCmd extends Command {
     });
   }
 
-  async run(message) {
-    const { mentions, author, channel, guild } = message;
-    const member = mentions.users.first() || author;
+  async run(message, args) {
+    const { author, channel, guild } = message;
+    const member = GetUserFromMention(this.client, args) || author;
 
     const avatar = member.displayAvatarURL({
       dynamic: true,
       size: 1024
-    })
+    });
 
     const embed = new MessageEmbed()
       .setColor(discord)
