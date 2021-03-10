@@ -23,6 +23,7 @@ client.on('ready', async () => {
     .registerGroups([
       ['misc', 'misc commands'],
       ['moderation', 'moderation commands'],
+      ['nsfw', 'nsfw commands'],
     ])
     .registerCommandsIn(path.join(__dirname, 'commands'));
 });

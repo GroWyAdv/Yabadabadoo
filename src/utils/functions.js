@@ -1,3 +1,6 @@
+const { MessageEmbed }      = require('discord.js');
+const { discord }           = require('@utils/colors.json');
+
 module.exports = {
   SendErrorMsg: function(message, error) {
     return message.channel.send(`**${message.author.username}**, ${error}`);
@@ -50,5 +53,16 @@ module.exports = {
 
       return client.users.cache.get(mention);
     }
+  },
+
+  ShowNSFWEmbed: function(message, title, image) {
+    const embed = new MessageEmbed()
+      .setColor(discord)
+      .setTitle(`[NSFW] ${title} :smirk:`)
+      .setDescription(`:underage: Are you sure you're over 18?`)
+      .setImage(image)
+      .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({ size: 32, dynamic: true }));
+    
+    return message.channel.send(embed).catch(err => console.error(err));
   }
 }
