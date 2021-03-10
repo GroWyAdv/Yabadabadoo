@@ -5,7 +5,7 @@ const { GetClientUpTime }                                       = require('@util
 const { ownerTag, ownerName, invGuildLink, invClientLink }      = require('@root/config.json');
 const { version }                                               = require('@root/package.json');
 
-module.exports = class BotInfoCommand extends Command {
+module.exports = class BotInfoCmd extends Command {
   constructor(client) {
     super(client, {
       name: 'botinfo',

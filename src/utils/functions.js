@@ -4,7 +4,7 @@ module.exports = {
   },
 
   SendUsageMsg: function(message, usage) {
-    return message.channel.send(`**${message.author.username}** try this ${message.guild.commandPrefix}${usage}`);
+    return message.channel.send(`**${message.author.username}** try this: \`${message.guild.commandPrefix}${usage}\``);
   },
 
   GetClientUpTime: function(client) {

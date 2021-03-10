@@ -3,7 +3,7 @@ const { Command }                 = require('discord.js-commando');
 const { discord }                 = require('@utils/colors.json');
 const { SendErrorMsg }            = require('@utils/functions');
 
-module.exports = class BansCommand extends Command {
+module.exports = class BansCmd extends Command {
   constructor(client) {
     super(client, {
       name: 'bans',

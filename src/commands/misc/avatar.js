@@ -2,7 +2,7 @@ const { MessageEmbed }        = require('discord.js');
 const { Command }             = require('discord.js-commando');
 const { discord }             = require('@utils/colors.json');
 
-module.exports = class AvatarCommand extends Command {
+module.exports = class AvatarCmd extends Command {
   constructor(client) {
     super(client, {
       name: 'avatar',
