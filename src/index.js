@@ -21,9 +21,9 @@ client.on('ready', async () => {
   client.registry
     .registerDefaultTypes()
     .registerGroups([
-      ['misc', 'misc commands'],
-      ['moderation', 'moderation commands'],
-      ['nsfw', 'nsfw commands'],
+      ['misc', ':tools: Miscellaneous'],
+      ['moderation', ':unlock: Moderation'],
+      ['nsfw', ':underage: NSFW'],
     ])
     .registerCommandsIn(path.join(__dirname, 'commands'));
 });
