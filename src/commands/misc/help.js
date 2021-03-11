@@ -17,11 +17,6 @@ module.exports = class HelpCmd extends Command {
     });
   }
 
-  // TODO:
-  // - sa afiseze singur grupele (de adaugat emoji la name si prostii)
-  // - sa afiseze singur comenzile pentru fiecare grupa
-  // - te pupic, dimineata placuta
-
   async run(message, args) {
     const { channel, guild } = message;
     
