@@ -26,7 +26,7 @@ module.exports = class HelpCmd extends Command {
       if(commands.length) {
         const cmd = commands[0];
 
-        let description = ``;
+        let description = '';
         description += `**Description:**\n${cmd.description}\n\n`;
         description += `**Usage:**\n\`${guild.commandPrefix}${cmd.name}\`\n\n`;
 
