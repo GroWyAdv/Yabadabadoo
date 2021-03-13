@@ -6,7 +6,7 @@ const { CommandoClient }                                    = require('discord.j
 const path                                                  = require('path');
 
 const { tokenId, ownerId, defaultPrefix, mongoPath }        = require('@root/config.json');
-const mongo                                                 = require('@features/mongo.js');
+const mongo                                                 = require('@features/mongo');
 
 const client = new CommandoClient({
   commandPrefix: defaultPrefix,

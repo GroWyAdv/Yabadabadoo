@@ -8,7 +8,7 @@ module.exports = class ClearChatCmd extends Command {
       memberName: 'clearchat',
       aliases: ['cc', 'purge'],
       group: 'moderation',
-      description: 'Clear chat lines',
+      description: 'Clear chat lines from current channel',
 
       guildOnly: true,
 
