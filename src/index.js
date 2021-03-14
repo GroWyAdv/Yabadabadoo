@@ -6,6 +6,7 @@ const { CommandoClient }                                    = require('discord.j
 const path                                                  = require('path');
 
 const { tokenId, ownerId, defaultPrefix, mongoPath }        = require('@root/config.json');
+const { SendErrorMsg }                                      = require('@utils/functions');
 const mongo                                                 = require('@features/mongo');
 
 const client = new CommandoClient({
@@ -26,6 +27,18 @@ client.on('ready', async () => {
       ['nsfw', ':underage: NSFW'],
     ])
     .registerCommandsIn(path.join(__dirname, 'commands'));
+});
+
+client.on('unknownCommand', (message) => {
+  const missingPermissions = message.channel.permissionsFor(client.user)
+    .missing(['ADD_REACTIONS', 'SEND_MESSAGES']);
+  
+  if(!missingPermissions.includes('ADD_REACTIONS')) {
+    message.react('🤔').catch(err => console.error(err));
+  }
+  else if(!missingPermissions.includes('SEND_MESSAGES')) {
+    SendErrorMsg(message, 'i don\'t recognize this command, uh.');
+  }
 });
 
 client.setProvider(MongoClient.connect(mongoPath, { useUnifiedTopology: true })
