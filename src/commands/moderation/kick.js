@@ -32,7 +32,7 @@ module.exports = class KickCmd extends Command {
       return SendErrorMsg(message, 'i don\'t want to kick this member, is my developer. 😢');
 
     if(member.id == message.author.id)
-      return SendErrorMsg(message, 'i don\'t want to kick you.');
+      return SendErrorMsg(message, 'i don\'t want to kick you, wtf.');
 
     if(!member.kickable)
       return SendErrorMsg(message, 'i can\'t kick this member, his permissions are higher than mine.');
@@ -43,21 +43,22 @@ module.exports = class KickCmd extends Command {
       reason = 'without reason';
     }
 
-    member.kick(reason).then(() => {
+    await member.kick(reason).then(async () => {
       if(message.deletable) {
         message.delete({ timeout: 5000 }).catch(err => console.error(err));
       }
 
-      new logSchema({
+      const kickLog = {
         targetId: member.id,
         memberId: message.author.id,
         guildId: message.guild.id,
         reason
-      }).save();
+      };
+      await new logSchema(kickLog).save();
 
-      message.channel.send(`* **${member.user.username}** has been successfully kicked. 😢`)
-        .then(m => m.delete({ timeout: 5000 }).catch(err => console.error(err)))
-        .catch(err => SendErrorMsg(message, `an error has been produced when i tried to kick this member.\nError: ${err.message}`));
-    });
+      await message.channel.send(`* **${member.user.username}** has been successfully kicked. 😢`)
+        .then(msg => msg.delete({ timeout: 5000 }).catch(err => console.error(err)))
+        .catch(err => console.error(err));
+    }).catch(err => SendErrorMsg(message, `an error has been produced when i tried to kick this member.\nError: ${err.message}`));
   }
 }

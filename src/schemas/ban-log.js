@@ -14,4 +14,4 @@ const logSchema = mongoose.Schema({
   timestamps: true
 });
 
-module.exports = mongoose.model('kick-logs', logSchema);
+module.exports = mongoose.model('ban-logs', logSchema);

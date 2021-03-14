@@ -31,8 +31,6 @@ client.on('ready', async () => {
 client.setProvider(MongoClient.connect(mongoPath, { useUnifiedTopology: true })
   .then((client) => {
     return new MongoDBProvider(client, 'yabadabadoo');
-  }).catch((err) => {
-    console.error(err);
-  }));
+  }).catch(err => console.error(err)));
 
 client.login(tokenId);
