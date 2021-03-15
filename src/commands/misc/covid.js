@@ -18,7 +18,7 @@ module.exports = class CovidCmd extends Command {
       
       guildOnly: true,
 
-      clientPermissions: ['SEND_MESSAGES']
+      clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });
   }
 
