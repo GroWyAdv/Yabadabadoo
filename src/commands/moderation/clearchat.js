@@ -12,8 +12,8 @@ module.exports = class ClearChatCmd extends Command {
 
       guildOnly: true,
 
-      clientPermissions: ['SEND_MESSAGES', 'MANAGE_MESSAGES', 'VIEW_CHANNEL'],
-      userPermissions: ['SEND_MESSAGES', 'MANAGE_MESSAGES', 'VIEW_CHANNEL']
+      clientPermissions: ['SEND_MESSAGES', 'MANAGE_MESSAGES'],
+      userPermissions: ['MANAGE_MESSAGES']
     });
   }
 

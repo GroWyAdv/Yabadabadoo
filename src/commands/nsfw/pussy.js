@@ -13,8 +13,7 @@ module.exports = class AssCmd extends Command {
       guildOnly: true,
       nsfw: true,
 
-      clientPermissions: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'EMBED_LINKS'],
-      userPermissions: ['SEND_MESSAGES', 'VIEW_CHANNEL']
+      clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });
   }
 

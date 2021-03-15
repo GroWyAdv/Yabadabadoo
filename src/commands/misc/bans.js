@@ -11,8 +11,7 @@ module.exports = class BansCmd extends Command {
 
       guildOnly: true,
 
-      clientPermissions: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
-      userPermissions: ['SEND_MESSAGES', 'VIEW_CHANNEL']
+      clientPermissions: ['SEND_MESSAGES', 'BAN_MEMBERS']
     });
   }
   

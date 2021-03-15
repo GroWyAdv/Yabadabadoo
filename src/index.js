@@ -30,6 +30,10 @@ client.on('ready', async () => {
 });
 
 client.on('unknownCommand', (message) => {
+  if(message.channel.type == 'dm') {
+    return;
+  }
+
   const missingPermissions = message.channel.permissionsFor(client.user)
     .missing(['ADD_REACTIONS', 'SEND_MESSAGES']);
   
