@@ -1,7 +1,8 @@
 const mongoose            = require('mongoose');
 const { mongoPath }       = require('@root/config.json');
+const initSettings        = require('@features/settings/init-settings');
 
-module.exports = async () => {
+module.exports = async (client) => {
   mongoose.connect(mongoPath, {
     keepAlive: true,
     useNewUrlParser: true,
@@ -13,5 +14,6 @@ module.exports = async () => {
   db.on('error', console.error.bind(console, 'connection error:'));
   db.once('open', function() {
     console.log('Mongoose connected...');
+    initSettings(client);
   });
 }

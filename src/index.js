@@ -1,13 +1,17 @@
 require('module-alias/register');
 
-const { MongoClient }                                       = require('mongodb');
-const { MongoDBProvider }                                   = require('commando-provider-mongo');
-const { CommandoClient }                                    = require('discord.js-commando');
-const path                                                  = require('path');
-
 const { tokenId, ownerId, defaultPrefix, mongoPath }        = require('@root/config.json');
 const { SendErrorMsg }                                      = require('@utils/functions');
-const mongo                                                 = require('@features/mongo');
+
+const { MongoClient }               = require('mongodb');
+const { MongoDBProvider }           = require('commando-provider-mongo');
+const { CommandoClient }            = require('discord.js-commando');
+const path                          = require('path');
+
+/* Features */
+const mongo           = require('@features/mongo');
+const welcome         = require('@features/settings/welcome');
+const leave           = require('@features/settings/leave');
 
 const client = new CommandoClient({
   commandPrefix: defaultPrefix,
@@ -17,7 +21,9 @@ const client = new CommandoClient({
 client.on('ready', async () => {
   console.log(`We are logged in as ${client.user.tag}`);
 
-  await mongo();
+  await mongo(client);
+  welcome(client);
+  leave(client);
 
   client.registry
     .registerDefaultTypes()
