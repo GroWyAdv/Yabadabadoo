@@ -15,7 +15,7 @@ const presence = require('@features/settings/presence');
 
 const client = new Commando.Client({
   commandPrefix: defaultPrefix,
-  owner: [ownerId, '409455294603591680']
+  owner: [ownerId]
 });
 
 client.on('ready', async () => {
