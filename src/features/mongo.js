@@ -7,13 +7,20 @@ module.exports = async (client) => {
     keepAlive: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useCreateIndex: true,
   });
 
-  const db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'connection error:'));
-  db.once('open', function() {
-    console.log('Mongoose connected...');
+  mongoose.connection.on('connected', () => {
+    console.log(`Mongoose has connected.`);
     initSettings(client);
+  });
+
+  mongoose.connection.on('err', err => {
+    console.error(`Mongoose error:\n${err.stack}`);
+  });
+
+  mongoose.connection.on('disconnect', () => {
+    console.warn(`Mongoose connection lost.`);
   });
 }

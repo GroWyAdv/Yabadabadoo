@@ -1,15 +1,20 @@
-const { Command }                 = require('discord.js-commando');
-const { SendErrorMsg }            = require('@utils/functions');
+const { Command } = require('discord.js-commando');
+const { SendErrorMsg } = require('@utils/functions');
 
 module.exports = class BansCmd extends Command {
   constructor(client) {
     super(client, {
       name: 'bans',
       memberName: 'bans',
+      description: 'displays banned members in current guild.',
+      details: 'bans',
       group: 'misc',
-      description: 'Displays banned members in current guild',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'BAN_MEMBERS']
     });
@@ -23,8 +28,9 @@ module.exports = class BansCmd extends Command {
       console.error(err);
     });
 
-    if(!banList.size)
+    if(!banList.size) {
       return SendErrorMsg(message, "there are no bans here.");
+    }      
 
     banList.forEach(element => {
       channel.send(`\`${element.user.username}#${element.user.discriminator}\` is banned for: \`${element.reason == null ? `no reason` : element.reason}\`.`);

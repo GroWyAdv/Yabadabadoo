@@ -1,10 +1,9 @@
-const { Command }                                               = require('discord.js-commando');
-const { MessageEmbed }                                          = require('discord.js');
-const { discord }                                               = require('@utils/colors.json');
-const { SendErrorMsg, SendUsageMsg, GetUserFromMention }        = require('@utils/functions');
-const logSchema                                                 = require('@schemas/kick-log');
-const settingsSchema                                            = require('@schemas/settings');
-const moment                                                    = require('moment-timezone');
+const { Command } = require('discord.js-commando');
+const { MessageEmbed } = require('discord.js');
+const { spellgrey } = require('@utils/colors.json');
+const { SendErrorMsg, SendUsageMsg, GetUserFromMention } = require('@utils/functions');
+const settingsSchema = require('@schemas/settings');
+const moment = require('moment-timezone');
 
 module.exports = class KickCmd extends Command {
   constructor(client) {
@@ -12,19 +11,24 @@ module.exports = class KickCmd extends Command {
       name: 'kick',
       memberName: 'kick',
       group: 'moderation',
-      description: 'Kick out a member from the guild',
+      description: 'if you have a toxic member on your channel use this command to calm him down.',
+      details: 'kick <mentioned member> <reason (optional)>',
       argsType: 'multiple',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 30
+      },
 
-      clientPermissions: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'KICK_MEMBERS', 'MANAGE_MESSAGES'],
-      userPermissions: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'KICK_MEMBERS'],
+      clientPermissions: ['SEND_MESSAGES', 'KICK_MEMBERS', 'MANAGE_MESSAGES'],
+      userPermissions: ['KICK_MEMBERS'],
     });
   }
 
   async run(message, args) {
     if(!args[0])
-      return SendUsageMsg(message, 'kick @user reason (optional)');
+      return SendUsageMsg(message, this.details);
     
     const { guild, author } = message;
 
@@ -67,11 +71,11 @@ module.exports = class KickCmd extends Command {
             const msgs = ["lul...", "lmao...", "lel...", "soo sad ☹", "hehe 🤣"];
 
             const embed = new MessageEmbed()
-              .setColor(discord)
+              .setColor(spellgrey)
               .setTitle('» Moderation Logs')
               .setDescription(`A new member was kicked, ${msgs[Math.floor(Math.random() * msgs.length)]}`)
-              .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true }))
-              .setThumbnail(member.user.displayAvatarURL({ size: 1024, dynamic: true }))
+              .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }))
+              .setThumbnail(member.user.displayAvatarURL({ size: 256, dynamic: true, format: 'png' }))
               .addFields(
                 { name: '× Kicked Member', value: `${member.user.username} [<@${member.id}>]`, inline: true },
                 { name: '× Kicked By', value: `${author.username} [<@${author.id}>]`, inline: true },
@@ -88,13 +92,6 @@ module.exports = class KickCmd extends Command {
           }
         }
       }
-
-      await new logSchema({
-        targetId: member.id,
-        memberId: author.id,
-        guildId: author.id,
-        reason
-      }).save();
 
       await message.channel.send(`* **${member.user.username}** has been successfully kicked. 😢`)
         .then(msg => msg.delete({ timeout: 5000 }).catch(err => console.error(err)))

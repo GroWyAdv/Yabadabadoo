@@ -1,10 +1,9 @@
-const { Command }                                           = require('discord.js-commando');
-const { SendErrorMsg, SendUsageMsg, GetUserFromMention }    = require('@utils/functions');
-const { MessageEmbed }                                      = require('discord.js');
-const { discord }                                           = require('@utils/colors.json');
-const settingsSchema                                        = require('@schemas/settings');
-const logSchema                                             = require('@schemas/ban-log');
-const moment                                                = require('moment-timezone');
+const { Command } = require('discord.js-commando');
+const { SendErrorMsg, SendUsageMsg, GetUserFromMention } = require('@utils/functions');
+const { MessageEmbed } = require('discord.js');
+const { spellgrey } = require('@utils/colors.json');
+const settingsSchema = require('@schemas/settings');
+const moment = require('moment-timezone');
 
 module.exports = class BanCmd extends Command {
   constructor(client) {
@@ -12,10 +11,15 @@ module.exports = class BanCmd extends Command {
       name: 'ban',
       memberName: 'ban',
       group: 'moderation',
-      description: 'Ban a member from the guild',
+      description: 'if you have a toxic member on your channel use this command to exterminate him.',
+      details: 'ban <mentioned user> <reason (optional)>',
       argsType: 'multiple',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 60
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'BAN_MEMBERS', 'MANAGE_MESSAGES'],
       userPermissions: ['BAN_MEMBERS']
@@ -24,7 +28,7 @@ module.exports = class BanCmd extends Command {
 
   async run(message, args) {
     if(!args[0])
-      return SendUsageMsg(message, 'ban <@user> <reason (optional)>');
+      return SendUsageMsg(message, this.details);
 
     const { guild, author } = message;
 
@@ -67,11 +71,11 @@ module.exports = class BanCmd extends Command {
               const msgs = ["lul...", "lmao...", "lel...", "soo sad ☹", "hehe 🤣"];
 
               const embed = new MessageEmbed()
-                .setColor(discord)
+                .setColor(spellgrey)
                 .setTitle('» Moderation Logs')
                 .setDescription(`A new member was banned, ${msgs[Math.floor(Math.random() * msgs.length)]}`)
-                .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true }))
-                .setThumbnail(member.user.displayAvatarURL({ size: 1024, dynamic: true }))
+                .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }))
+                .setThumbnail(member.user.displayAvatarURL({ size: 256, dynamic: true, format: 'png' }))
                 .addFields(
                   { name: '× Banned Member', value: `${member.user.username} [<@${member.id}>]`, inline: true },
                   { name: '× Banned By', value: `${author.username} [<@${author.id}>]`, inline: true },
@@ -88,13 +92,6 @@ module.exports = class BanCmd extends Command {
             }
           }
         }
-
-        await new logSchema({
-          targetId: member.id,
-          memberId: author.id,
-          guildId: guild.id,
-          reason
-        }).save();
 
         await message.channel.send(`* **${member.user.username}** has been succesfully banned. 😢`)
           .then(msg => msg.delete({ timeout: 5000 })).catch(err => console.error(err))

@@ -10,9 +10,14 @@ module.exports = class BoobsCmd extends Command {
       aliases: ['tities', 'tits'],
       group: 'nsfw',
       description: 'NSFW content with boobs category.',
+      details: 'boobs',
 
       guildOnly: true,
       nsfw: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });

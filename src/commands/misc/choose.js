@@ -1,5 +1,5 @@
-const { Command }         = require('discord.js-commando');
-const { SendUsageMsg }    = require('@utils/functions');
+const { Command } = require('discord.js-commando');
+const { SendUsageMsg } = require('@utils/functions');
 
 module.exports = class ChooseCmd extends Command {
   constructor(client) {
@@ -7,9 +7,14 @@ module.exports = class ChooseCmd extends Command {
       name: 'choose',
       memberName: 'choose',
       group: 'misc',
-      description: 'Choose between options',
+      description: 'if you\'re undecided, i\'ll help you choose between different options.',
+      details: 'choose <options separated by a comma>',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES']
     });
@@ -17,7 +22,7 @@ module.exports = class ChooseCmd extends Command {
   
   async run(message, args) {
     if(!args)
-      return SendUsageMsg(message, 'choose [options (separated by a comma)]');
+      return SendUsageMsg(message, this.details);
     
     const result = args.split(', ');
     const msgOptions = [

@@ -1,7 +1,7 @@
-const { Command }                   = require('discord.js-commando');
-const { MessageEmbed }              = require('discord.js');
-const { discord }                   = require('@utils/colors.json');
-const { GetUserFromMention }        = require('@utils/functions');
+const { Command } = require('discord.js-commando');
+const { MessageEmbed } = require('discord.js');
+const { spellgrey } = require('@utils/colors.json');
+const { GetUserFromMention } = require('@utils/functions');
 
 module.exports = class GayRateCmd extends Command {
   constructor(client) {
@@ -9,10 +9,15 @@ module.exports = class GayRateCmd extends Command {
       name: 'gayrate',
       memberName: 'gayrate',
       group: 'misc',
-      description: 'Displays members gay rate',
+      description: 'displays you your or a member\'s gay rate, is 100% real trust me.',
+      details: 'gayrate <mentioned member (default is you)>',
       argsType: 'multiple',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });
@@ -34,7 +39,7 @@ module.exports = class GayRateCmd extends Command {
     }
 
     const embed = new MessageEmbed()
-      .setColor(discord)
+      .setColor(spellgrey)
       .setTitle('» Gay Rate')
       .setDescription(`**${mentioned.username}** is ${rate}% gay.`)
       .setThumbnail('https://imgur.com/s6W7vSp.png');

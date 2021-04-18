@@ -1,4 +1,4 @@
-const settingsSchema = require('@schemas/settings');
+const settingsSchema      = require('@schemas/settings');
 
 module.exports = async (client) => {
   client.guilds.cache.forEach(async (guild) => {

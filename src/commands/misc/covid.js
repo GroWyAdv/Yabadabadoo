@@ -1,9 +1,9 @@
-const { Command }                       = require('discord.js-commando');
-const { COVID19API }                    = require('@evrimfeyyaz/covid-19-api');
-const { discord }                       = require('@utils/colors.json');
-const { MessageEmbed }                  = require('discord.js');
-const { SendUsageMsg, SendErrorMsg }    = require('@utils/functions');
-const nodeFetch                         = require('node-fetch');
+const { Command } = require('discord.js-commando');
+const { COVID19API } = require('@evrimfeyyaz/covid-19-api');
+const { spellgrey } = require('@utils/colors.json');
+const { MessageEmbed } = require('discord.js');
+const { SendUsageMsg, SendErrorMsg } = require('@utils/functions');
+const nodeFetch = require('node-fetch');
 
 const covid = new COVID19API({ fetch: nodeFetch });
 covid.init(() => console.log("Covid stats initialized."));
@@ -14,9 +14,14 @@ module.exports = class CovidCmd extends Command {
       name: 'covid',
       memberName: 'covid',
       group: 'misc',
-      description: 'Displays stats about covid for whatever country',
+      description: 'displays stats about Covid-19 for whatever country you want.',
+      details: 'covid <country name>',
       
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_MESSAGES']
     });
@@ -24,19 +29,21 @@ module.exports = class CovidCmd extends Command {
 
   async run(message, args) {
     if(!args)
-      return SendUsageMsg(message, 'covid <country name>');
+      return SendUsageMsg(message, this.details);
 
     const { channel } = message;
-    const msg = await channel.send(new MessageEmbed({
-      description: `Processing...`,
-      color: discord
-    }));
 
-    await covid.getDataByLocation(args).then(async (data) => {
+    const embed = new MessageEmbed()
+      .setColor(spellgrey)
+      .setDescription(`Processing...`);
+
+    const msg = await channel.send(embed);
+
+    covid.getDataByLocation(args).then(async (data) => {
       const values = data.values[data.values.length - 1];
 
-      const embed = await new MessageEmbed()
-        .setColor(discord)
+      const embed = new MessageEmbed()
+        .setColor(spellgrey)
         .setTitle('» Covid 19 Statistics')
         .setDescription(`Informations about **${data.location}** on **${values.date}**\n\u200B`)
         .addFields(
@@ -53,10 +60,7 @@ module.exports = class CovidCmd extends Command {
           { name: '• Fatality Rate', value: values.caseFatalityRate.toFixed(2), inline: true }
         );
       
-      await msg.edit({
-        content: '',
-        embed
-      });
+      msg.edit({ content: '', embed });
     }).catch(err => {
       msg.delete({ timeout: 100 }).catch(err => console.error(err));
 

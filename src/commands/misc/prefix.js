@@ -1,7 +1,7 @@
-const { Command }             = require('discord.js-commando');
-const { MessageEmbed }        = require('discord.js');
-const { discord }             = require('@utils/colors.json');
-const { SendErrorMsg }        = require('@utils/functions');
+const { Command } = require('discord.js-commando');
+const { MessageEmbed } = require('discord.js');
+const { spellgrey } = require('@utils/colors.json');
+const { SendErrorMsg } = require('@utils/functions');
 
 module.exports = class PrefixCmd extends Command {
   constructor(client) {
@@ -9,9 +9,14 @@ module.exports = class PrefixCmd extends Command {
       name: 'prefix',
       memberName: 'prefix',
       group: 'misc',
-      description: 'Change/show bot prefix',
+      description: 'use to show you the bot prefix for this guild, administrators can change it.',
+      details: 'prefix <prefix (only if you\'re administrator of guild)',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });
@@ -23,9 +28,9 @@ module.exports = class PrefixCmd extends Command {
     if(!args) {
       const prefix = guild.commandPrefix;
       const embed = new MessageEmbed()
-        .setColor(discord)
+        .setColor(spellgrey)
         .setDescription(`• To run commands, please use ${message.anyUsage('command')}.\n${prefix ? `• The command prefix is \`${prefix}\`.` : `• There is no command prefix.`}`)
-        .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true }));
+        .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }));
 
       return channel.send(embed);
     }
@@ -39,9 +44,9 @@ module.exports = class PrefixCmd extends Command {
     guild.commandPrefix = prefix;
 
     const embed = new MessageEmbed()
-      .setColor(discord)
-      .setDescription(`• To run commands, please use ${message.anyUsage('command')}.\n× Prefix updated to \`${prefix}\`.`)
-      .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true }));
+      .setColor(spellgrey)
+      .setDescription(`• The command prefix for this guild is updated to: \`${prefix}\``)
+      .setFooter(`Updated by ${author.username}`, author.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }));
     
     return channel.send(embed);
   }

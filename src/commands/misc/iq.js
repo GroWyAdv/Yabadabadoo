@@ -1,7 +1,7 @@
-const { Command }                   = require('discord.js-commando');
-const { MessageEmbed }              = require('discord.js');
-const { discord }                   = require('@utils/colors.json');
-const { GetUserFromMention }        = require('@utils/functions');
+const { Command } = require('discord.js-commando');
+const { MessageEmbed } = require('discord.js');
+const { spellgrey } = require('@utils/colors.json');
+const { GetUserFromMention } = require('@utils/functions');
 
 module.exports = class IqCmd extends Command {
   constructor(client) {
@@ -9,10 +9,15 @@ module.exports = class IqCmd extends Command {
       name: 'iq',
       memberName: 'iq',
       group: 'misc',
-      description: 'Displays members iq',
+      description: 'displays you your or a member\'s iq, this is also 100% real trust me.',
+      details: 'iq <mentioned member (default is you)>',
       argsType: 'multiple',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });
@@ -42,11 +47,11 @@ module.exports = class IqCmd extends Command {
     else if(iq >= 20 && iq < 69) result = 'probably cunt';
 
     const embed = new MessageEmbed()
-      .setColor(discord)
+      .setColor(spellgrey)
       .setTitle('» IQ Calculator')
       .setDescription(`**${mentioned.username}**'s iq is: **${iq}**.\n• Result: ${result}.`)
-      .setThumbnail(mentioned.displayAvatarURL({ size: 1024, dynamic: true }))
-      .setFooter(`Requested by ${mentioned.tag}`, mentioned.displayAvatarURL({ size: 32, dynamic: true }));
+      .setThumbnail(mentioned.displayAvatarURL({ size: 256, dynamic: true, format: 'png' }))
+      .setFooter(`Requested by ${author.tag}`, author.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }));
     
     return channel.send(embed);
   }

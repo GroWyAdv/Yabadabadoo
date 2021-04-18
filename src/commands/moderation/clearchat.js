@@ -1,5 +1,5 @@
-const { Command }                             = require('discord.js-commando');
-const { SendErrorMsg, SendUsageMsg }          = require('@utils/functions');
+const { Command } = require('discord.js-commando');
+const { SendErrorMsg, SendUsageMsg } = require('@utils/functions');
 
 module.exports = class ClearChatCmd extends Command {
   constructor(client) {
@@ -8,9 +8,14 @@ module.exports = class ClearChatCmd extends Command {
       memberName: 'clearchat',
       aliases: ['cc', 'purge'],
       group: 'moderation',
-      description: 'Clear chat lines from current channel',
+      description: 'use to remove an amount of lines from a text channel.',
+      details: 'clearchat <amount of messages>',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 15
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'MANAGE_MESSAGES'],
       userPermissions: ['MANAGE_MESSAGES']
@@ -18,8 +23,8 @@ module.exports = class ClearChatCmd extends Command {
   }
 
   async run(message, args) {
-    if(!args)
-      return SendUsageMsg(message, 'clearchat [amount of messages]');
+    if(isNaN(args))
+      return SendUsageMsg(message, this.details);
 
     let messages = parseInt(args);
     
@@ -29,10 +34,10 @@ module.exports = class ClearChatCmd extends Command {
     const { channel } = message;
 
     if(message.deletable) {
-      message.delete({ timeout: 100 }).then(() => {
-        channel.messages.fetch({ limit: messages }).then(m => {
-          channel.bulkDelete(m, true).then(() => {
-            channel.send(`♻ ${messages} ${messages == 1 ? 'message' : 'messages'} has been deleted.`).then(m => {
+      await message.delete({ timeout: 100 }).then(async () => {
+        await channel.messages.fetch({ limit: messages }).then(async m => {
+          await channel.bulkDelete(m, true).then(async (m) => {
+            await channel.send(`♻ ${m.size} ${m.size == 1 ? 'message' : 'messages'} has been deleted.`).then(m => {
               m.delete({ timeout: 5000 }).catch(err => console.error(err.message));
             });
           }).catch(err => {

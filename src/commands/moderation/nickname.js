@@ -1,9 +1,9 @@
-const { Command }                                           = require('discord.js-commando');
-const { SendUsageMsg, SendErrorMsg, GetUserFromMention }    = require('@utils/functions');
-const { MessageEmbed }                                      = require('discord.js');
-const { discord }                                           = require('@utils/colors.json');
-const moment                                                = require('moment-timezone');
-const settingsSchema                                        = require('@schemas/settings');
+const { Command } = require('discord.js-commando');
+const { SendUsageMsg, SendErrorMsg, GetUserFromMention } = require('@utils/functions');
+const { MessageEmbed } = require('discord.js');
+const { discord } = require('@utils/colors.json');
+const moment = require('moment-timezone');
+const settingsSchema = require('@schemas/settings');
 
 module.exports = class NicknameCmd extends Command {
   constructor(client) {
@@ -11,11 +11,16 @@ module.exports = class NicknameCmd extends Command {
       name: 'nickname',
       memberName: 'nickname',
       aliases: ['nick', 'changenickname', 'changenick'],
-      description: 'Changes the nickname of a member',
+      description: 'use to change a member\'s nickname.',
+      details: 'nickname <mentioned member> <new nickname>',
       group: 'moderation',
       argsType: 'multiple',
       
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 15
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'CHANGE_NICKNAME', 'MANAGE_NICKNAMES'],
       userPermissions: ['CHANGE_NICKNAME', 'MANAGE_NICKNAMES']
@@ -55,7 +60,7 @@ module.exports = class NicknameCmd extends Command {
               .setColor(discord)
               .setTitle('» Moderation Logs')
               .setDescription(`Nickname changed.`)
-              .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true }))
+              .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }))
               .addFields(
                 { name: '× Changed By', value: `${author.username} [<@${author.id}>]`, inline: true },
                 { name: '× Change At', value: moment().tz('Europe/Bucharest').format('HH:mm - DD.MM.YYYY'), inline: true },

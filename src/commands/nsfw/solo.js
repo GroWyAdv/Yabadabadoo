@@ -9,9 +9,14 @@ module.exports = class AssCmd extends Command {
       memberName: 'solo',
       group: 'nsfw',
       description: 'NSFW content with solo anime category.',
+      details: 'solo',
 
       guildOnly: true,
       nsfw: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });

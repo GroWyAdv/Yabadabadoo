@@ -1,5 +1,5 @@
 const { MessageEmbed }                  = require('discord.js');
-const { discord }                       = require('@utils/colors.json');
+const { spellgrey }                       = require('@utils/colors.json');
 const settingsSchema                    = require('@schemas/settings');
 const moment                            = require('moment-timezone');
 
@@ -19,11 +19,11 @@ module.exports = (client) => {
 
         if(!missingPermissions.includes('EMBED_LINKS')) {
           const embed = new MessageEmbed()
-            .setColor(discord)
+            .setColor(spellgrey)
             .setTitle('» Join')
             .setDescription(`A new ${member.bot ? 'bot' : 'member'} joined the server... 🍾🤗🥂`)
-            .setThumbnail(user.displayAvatarURL({ size: 1024, dynamic: true }))
-            .setFooter(client.user.username, client.user.displayAvatarURL({ size: 32, dynamic: true }))
+            .setThumbnail(user.displayAvatarURL({ size: 256, dynamic: true, format: 'png' }))
+            .setFooter(client.user.username, client.user.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }))
             .addFields(
               { name: member.bot ? '× Bot' : '× Member', value: user.tag },
               { name: '× Account Created At', value: moment(user.createdAt).tz('Europe/Bucharest').format('HH:mm - DD.MM.YYYY') }

@@ -5,11 +5,11 @@ const requiredString = {
   required: true
 };
 
-const settingsSchema = mongoose.Schema({
+const settingsSchema = new mongoose.Schema({
   _id: requiredString,
   welcomeMessages: requiredString,
   leaveMessages: requiredString,
   modMessages: requiredString,
 });
 
-module.exports = mongoose.model('bot-settings', settingsSchema);
+module.exports = mongoose.model('guilds-settings', settingsSchema);

@@ -9,9 +9,14 @@ module.exports = class AssCmd extends Command {
       memberName: 'pussy',
       group: 'nsfw',
       description: 'NSFW content with pussy category.',
+      details: 'pussy',
 
       guildOnly: true,
       nsfw: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });

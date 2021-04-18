@@ -9,9 +9,14 @@ module.exports = class AnalCmd extends Command {
       memberName: 'anal',
       group: 'nsfw',
       description: 'NSFW content with anal category.',
+      details: 'anal',
 
       guildOnly: true,
       nsfw: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });

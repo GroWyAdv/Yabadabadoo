@@ -10,9 +10,14 @@ module.exports = class AssCmd extends Command {
       aliases: ['asshentai', 'hentai-ass', 'ass-hentai', 'hentaibutt', 'hentai-butt', 'butt-hentai'],
       group: 'nsfw',
       description: 'NSFW content with ass of hentai category.',
+      details: 'hentaiass',
 
       guildOnly: true,
       nsfw: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });

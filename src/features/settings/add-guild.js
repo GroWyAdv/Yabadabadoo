@@ -1,7 +1,7 @@
 const settingsSchema = require('@schemas/settings');
 
 module.exports = async (client) => {
-  client.on('guildCreate', (guild) => {
+  client.on('guildCreate', async (guild) => {
     const result = await settingsSchema.findOne({ _id: guild.id });
    
     if(result == null) {

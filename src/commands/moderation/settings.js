@@ -1,8 +1,8 @@
-const { Command }                           = require('discord.js-commando');
-const { SendErrorMsg, SendUsageMsg }        = require('@utils/functions');
-const { discord }                           = require('@utils/colors.json');
-const { MessageEmbed }                      = require('discord.js');
-const settingsSchema                        = require('@schemas/settings');
+const { Command } = require('discord.js-commando');
+const { SendErrorMsg, SendUsageMsg } = require('@utils/functions');
+const { spellgrey } = require('@utils/colors.json');
+const { MessageEmbed } = require('discord.js');
+const settingsSchema = require('@schemas/settings');
 
 module.exports = class UpdateCmd extends Command {
   constructor(client) {
@@ -11,10 +11,15 @@ module.exports = class UpdateCmd extends Command {
       memberName: 'settings',
       aliases: ['setting'],
       group: 'moderation',
-      description: 'Acces the settings board of the bot for this guild',
+      description: 'use to acces the settings panel of the bot for this guild, also you can change options with this command.',
+      details: 'settings <option (default will show you the panel)>',
       argsType: 'multiple',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS'],
       userPermissions: ['ADMINISTRATOR']
@@ -27,7 +32,7 @@ module.exports = class UpdateCmd extends Command {
     switch(args[0]) {
       case 'help': {
         const embed = new MessageEmbed()
-          .setColor(discord)
+          .setColor(spellgrey)
           .setTitle('Settings Help')
           .setDescription('Here are some informations for settings panel.\nUse `disable` parameter to disable a feature.')
           .addFields(
@@ -134,10 +139,10 @@ module.exports = class UpdateCmd extends Command {
           const modChannel = settings.modMessages == 'none' ? 'Disabled' : guild.channels.cache.get(settings.modMessages);
 
           const embed = new MessageEmbed()
-            .setColor(discord)
+            .setColor(spellgrey)
             .setTitle('» Settings')
             .setDescription(`There are the current guild settings for the bot.\n• You can use ${message.anyUsage('settings')} to change.\n• Also use ${message.anyUsage('settings help')} for more informations.`)
-            .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true }))
+            .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }))
             .addFields(
               { name: '• Welcome Messages', value: welcomeChannel ? welcomeChannel : `Disabled`, inline: true },
               { name: '• Leave Messages', value: leaveChannel ? leaveChannel : `Disabled`, inline: true },

@@ -10,9 +10,14 @@ module.exports = class AssCmd extends Command {
       aliases: ['4k'],
       group: 'nsfw',
       description: 'NSFW content with 4k resolution.',
+      details: 'fourk',
 
       guildOnly: true,
       nsfw: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });

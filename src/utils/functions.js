@@ -1,5 +1,5 @@
 const { MessageEmbed }      = require('discord.js');
-const { discord }           = require('@utils/colors.json');
+const { spellgrey }           = require('@utils/colors.json');
 
 const regions = {
   "brazil": ":flag_br: Brazil",
@@ -26,37 +26,6 @@ module.exports = {
     return message.channel.send(`**${message.author.username}** try this: \`${message.guild.commandPrefix}${usage}\``);
   },
 
-  GetClientUpTime: function(client) {
-    let seconds = Math.floor(client.uptime / 1000);
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
-    let days = Math.floor(hours / 24);
-
-    seconds %= 60;
-    minutes %= 60;
-    hours %= 24;
-
-    let upTime = '';
-
-    if(days) {
-      upTime += `${days} ${days == 1 ? 'day' : 'days'}`;
-    }
-
-    if(hours) {
-      upTime += ` ${hours} ${hours == 1 ? 'hour' : 'hours'}`;
-    }
-
-    if(minutes) {
-      upTime += ` ${minutes} ${minutes == 1 ? 'minute' : 'minutes'}`;
-    }
-
-    if(seconds) {
-      upTime += ` ${seconds} ${seconds == 1 ? 'second' : 'seconds'}`;
-    }
-
-    return upTime;
-  },
-
   GetUserFromMention: function(client, mention) {
     if(!mention)
       return;
@@ -74,11 +43,11 @@ module.exports = {
 
   ShowNSFWEmbed: function(message, title, image) {
     const embed = new MessageEmbed()
-      .setColor(discord)
+      .setColor(spellgrey)
       .setTitle(`[NSFW] ${title} :smirk:`)
       .setDescription(`:underage: Are you sure you're over 18?`)
       .setImage(image)
-      .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({ size: 32, dynamic: true }));
+      .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }));
     
     return message.channel.send(embed).catch(err => console.error(err));
   },

@@ -1,8 +1,8 @@
-const { Command }                           = require('discord.js-commando');
-const { MessageEmbed }                      = require('discord.js');
-const { SendUsageMsg, SendErrorMsg }        = require('@utils/functions');
-const { discord }                           = require('@utils/colors.json');
-const math                                  = require('mathjs');
+const { Command } = require('discord.js-commando');
+const { MessageEmbed } = require('discord.js');
+const { SendUsageMsg, SendErrorMsg } = require('@utils/functions');
+const { spellgrey } = require('@utils/colors.json');
+const math = require('mathjs');
 
 module.exports = class MathCmd extends Command {
   constructor(client) {
@@ -11,9 +11,14 @@ module.exports = class MathCmd extends Command {
       memberName: 'math',
       aliases: ['calculator', 'calc'],
       group: 'misc',
-      description: 'Calculate math operations',
+      description: 'use to calculate math operations or to make conversions.',
+      details: 'math <math operation or math conversion>',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });
@@ -21,19 +26,17 @@ module.exports = class MathCmd extends Command {
 
   async run(message, args) {
     if(!args)
-      return SendUsageMsg(message, 'math [math operation]');
+      return SendUsageMsg(message, this.details);
     
     try {
       const embed = new MessageEmbed()
-        .setColor(discord)
+        .setColor(spellgrey)
         .setTitle('» Calculator')
         .setDescription(`${message.author.username}, there is your result.`)
-        .addFields(
-          { name: '× Question', value: args, inline: true },
-          { name: '× Result', value: math.evaluate(args), inline: true }
-        );
+        .addField('× Question', args, true)
+        .addField('× Result', math.evaluate(args), true);
       
-      return message.channel.send(embed);
+      message.channel.send(embed);
     } catch(err) {
       SendErrorMsg(message, 'invalid operation.');
     }

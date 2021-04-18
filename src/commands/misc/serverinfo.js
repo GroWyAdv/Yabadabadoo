@@ -1,8 +1,8 @@
-const { Command }                           = require('discord.js-commando');
-const { MessageEmbed }                      = require('discord.js');
-const { CapitalizeText, GetGuildRegion }    = require('@utils/functions');
-const { discord }                           = require('@utils/colors.json');
-const moment                                = require('moment-timezone');
+const { Command } = require('discord.js-commando');
+const { MessageEmbed } = require('discord.js');
+const { CapitalizeText, GetGuildRegion } = require('@utils/functions');
+const { spellgrey } = require('@utils/colors.json');
+const moment = require('moment-timezone');
 
 module.exports = class ServerInfoCmd extends Command {
   constructor(client) {
@@ -11,9 +11,14 @@ module.exports = class ServerInfoCmd extends Command {
       memberName: 'serverinfo',
       aliases: ['svinfo', 'infoserver', 'infosv', 'guildinfo', 'infoguild'],
       group: 'misc',
-      description: 'Get informations about this guild',
+      description: 'displays informations about this guild.',
+      details: 'serverinfo',
 
       guildOnly: true,
+      throttling: {
+        usages: 1,
+        duration: 3
+      },
 
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS']
     });
@@ -30,11 +35,11 @@ module.exports = class ServerInfoCmd extends Command {
     const afkTime = `${afkTimeout}${afkChannelID == null ? " doesn't matter" : ""}`;
 
     const embed = new MessageEmbed()
-      .setColor(discord)
-      .setThumbnail(message.guild.iconURL({ size: 1024, dynamic: true }))
+      .setColor(spellgrey)
+      .setThumbnail(message.guild.iconURL({ size: 1024, dynamic: true, format: 'png' }))
       .setTitle(`» Guild Informations`)
       .setDescription(`There's some informations about this guild.\n\u200B`)
-      .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true }))
+      .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 32, dynamic: true, format: 'png' }))
       .addFields(
         { name: '× Guild ID', value: id, inline: true },
         { name: '× Guild Name', value: name, inline: true },
